@@ -1,5 +1,6 @@
 package com.api.movieratingsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_movie")
-@AllArgsConstructor @NoArgsConstructor @Getter @Setter
+@Table(name = "tb_filme")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class FilmeModel {
 
     @Id
@@ -21,16 +23,17 @@ public class FilmeModel {
     private Long id;
     private String titulo;
     private String diretor;
-    private Date lancamento;
+    private String lancamento;
     private String sinopse;
     @JsonIgnore
     @OneToMany(mappedBy = "filme")
     private List<AvaliacaoModel> avaliacoes = new ArrayList<>();
     private Double notaMedia;
 
-    private void calcularMedia(){
-        for (AvaliacaoModel avaliacao: avaliacoes) {
-            notaMedia += avaliacao.getNota();
-        }
+    public FilmeModel(String titulo, String diretor, String lancamento, String sinopse){
+        this.titulo = titulo;
+        this.diretor = diretor;
+        this.lancamento = lancamento;
+        this.sinopse = sinopse;
     }
 }
