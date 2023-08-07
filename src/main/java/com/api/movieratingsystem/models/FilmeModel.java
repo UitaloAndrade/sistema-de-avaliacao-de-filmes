@@ -2,10 +2,7 @@ package com.api.movieratingsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,8 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_filme")
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
+@EqualsAndHashCode
 public class FilmeModel implements Serializable {
 
     @Id
@@ -24,7 +22,16 @@ public class FilmeModel implements Serializable {
     private String diretor;
     private String lancamento;
     private String sinopse;
+    private Double notaMedia;
     @JsonIgnore
-    @OneToMany(mappedBy = "filme")
+    @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter(AccessLevel.NONE)
     private List<AvaliacaoModel> avaliacoes = new ArrayList<>();
+
+    public FilmeModel(String titulo, String diretor, String lancamento, String sinopse){
+        this.titulo = titulo;
+        this.diretor = diretor;
+        this.lancamento = lancamento;
+        this.sinopse = sinopse;
+    }
 }
