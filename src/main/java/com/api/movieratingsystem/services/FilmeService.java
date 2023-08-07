@@ -1,9 +1,6 @@
 package com.api.movieratingsystem.services;
 
-import com.api.movieratingsystem.controllers.AvaliacaoController;
-import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
-import com.api.movieratingsystem.repositories.AvaliacaoRepository;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,25 +13,33 @@ public class FilmeService {
 
     @Autowired
     private FilmeRepository repository;
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
 
     public List<FilmeModel> findAll(){
         return repository.findAll();
     }
 
-    public Double calcularMedia(Long id){
+    public FilmeModel findById(Long id){
         Optional<FilmeModel> filme = repository.findById(id);
-        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByFilme(filme.get());
-        return nota(avaliacoes);
+        return filme.get();
     }
 
-    private Double nota(List<AvaliacaoModel> avaliacoes){
-        double media = 0d;
-        for (AvaliacaoModel x: avaliacoes) {
-            media += x.getNota();
-        }
-        media = media / avaliacoes.size();
-        return media;
+    public FilmeModel save(FilmeModel filme){
+        filme = repository.save(filme);
+        return filme;
     }
+
+    public FilmeModel update(Long id, FilmeModel obj){
+        FilmeModel filme = repository.findById(id).get();
+        filme.setTitulo(obj.getTitulo());
+        filme.setDiretor(obj.getDiretor());
+        filme.setLancamento(obj.getLancamento());
+        filme.setSinopse(obj.getSinopse());
+        filme = repository.save(filme);
+        return filme;
+    }
+
+    public void delete(Long id){
+        repository.deleteById(id);
+    }
+
 }
