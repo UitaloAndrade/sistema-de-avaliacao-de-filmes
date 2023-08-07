@@ -24,7 +24,7 @@ public class FilmeModel implements Serializable {
     private String sinopse;
     private Double notaMedia;
     @JsonIgnore
-    @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Setter(AccessLevel.NONE)
     private List<AvaliacaoModel> avaliacoes = new ArrayList<>();
 

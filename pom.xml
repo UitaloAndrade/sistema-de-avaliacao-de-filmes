@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.api</groupId>
-	<artifactId>movieratingsystem</artifactId>
+	<artifactId>sistema-de-avaliacao-de-filmes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>movieratingsystem</name>
 	<description>API Rest  para gerenciar um sistema de avaliação de filmes.</description>

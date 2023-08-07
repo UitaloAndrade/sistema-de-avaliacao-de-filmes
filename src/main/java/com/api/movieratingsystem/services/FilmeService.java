@@ -1,5 +1,6 @@
 package com.api.movieratingsystem.services;
 
+import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,4 +43,18 @@ public class FilmeService {
         repository.deleteById(id);
     }
 
+    public void atualizarNotaMedia(Long id){
+        FilmeModel filme = findById(id);
+        filme.setNotaMedia(calcularNotaMedia(filme));
+        repository.save(filme);
+    }
+
+    private Double calcularNotaMedia(FilmeModel filme){
+        List<AvaliacaoModel> avaliacoes = filme.getAvaliacoes();
+        if (avaliacoes.isEmpty()) {
+            return 0d;
+        }
+        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
+        return somaNotas / avaliacoes.size();
+    }
 }

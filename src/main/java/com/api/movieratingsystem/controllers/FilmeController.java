@@ -35,7 +35,7 @@ public class FilmeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(filme);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FilmeModel> save(@PathVariable Long id, @RequestBody FilmeModel filme){
+    public ResponseEntity<FilmeModel> upadte(@PathVariable Long id, @RequestBody FilmeModel filme){
         filme = filmeService.update(id, filme);
         return ResponseEntity.ok().body(filme);
     }
