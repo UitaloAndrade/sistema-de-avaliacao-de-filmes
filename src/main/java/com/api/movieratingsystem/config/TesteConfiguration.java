@@ -4,6 +4,7 @@ import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
 import com.api.movieratingsystem.repositories.FilmeRepository;
+import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +18,18 @@ public class TesteConfiguration implements CommandLineRunner {
     private FilmeRepository filmeRepository;
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
+    private FilmeService filmeService;
 
     @Override
     public void run(String... args) throws Exception {
         filmeRepository.deleteAll();
         avaliacaoRepository.deleteAll();
 
-        FilmeModel filme1 = new FilmeModel(null, "Harry Potter", "Uitalo", "2001/01/01", "Um filme epico da minha infancia", null, null);
-        FilmeModel filme2 = new FilmeModel(null, "Velozes e furiosos", "Uitalo", "2001/01/01", "Melhor filme sobre carros", null, null);
-        FilmeModel filme3 = new FilmeModel(null, "Barbie", "Uitalo", "2001/01/01", "Novo no cinema", null, null);
-        FilmeModel filme4 = new FilmeModel(null, "Hobbit", "Uitalo", "2001/01/01", "Legal", null, null);
+        FilmeModel filme1 = new FilmeModel(null, "Harry Potter", "Uitalo", "2001/01/01", "Um filme epico da minha infancia", null);
+        FilmeModel filme2 = new FilmeModel(null, "Velozes e furiosos", "Uitalo", "2001/01/01", "Melhor filme sobre carros", null);
+        FilmeModel filme3 = new FilmeModel(null, "Barbie", "Uitalo", "2001/01/01", "Novo no cinema", null);
+        FilmeModel filme4 = new FilmeModel(null, "Hobbit", "Uitalo", "2001/01/01", "Legal", null);
 
         filmeRepository.save(filme1);
         filmeRepository.save(filme2);

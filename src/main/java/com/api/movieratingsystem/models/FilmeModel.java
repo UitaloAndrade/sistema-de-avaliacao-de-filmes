@@ -13,8 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_filme")
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 public class FilmeModel implements Serializable {
 
@@ -28,5 +27,4 @@ public class FilmeModel implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "filme")
     private List<AvaliacaoModel> avaliacoes = new ArrayList<>();
-    private Double notaMedia;
 }
