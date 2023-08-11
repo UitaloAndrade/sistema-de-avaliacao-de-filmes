@@ -43,4 +43,21 @@ public class FilmeModel implements Serializable {
         this.lancamento = obj.lancamento();
         this.sinopse = obj.sinopse();
     }
+
+    public void calcularNotaMedia(){
+        if (avaliacoes.isEmpty()) {
+            this.notaMedia = 0d;
+        }
+        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
+        this.notaMedia = somaNotas / avaliacoes.size();
+    }
+
+    public void deletarComentario(Long id_avaliacao) {
+        for (int i = 0; i < avaliacoes.size(); i++) {
+            if (avaliacoes.get(i).getId() == id_avaliacao) {
+                avaliacoes.remove(i);
+            }
+        }
+        calcularNotaMedia();
+    }
 }

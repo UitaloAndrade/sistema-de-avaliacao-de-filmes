@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -39,16 +38,9 @@ public class TesteConfiguration implements CommandLineRunner {
         filme1.getAvaliacoes().addAll(Arrays.asList(avaliacao1, avaliacao2, avaliacao5));
         filme2.getAvaliacoes().addAll(Arrays.asList(avaliacao3, avaliacao4));
 
-        filme1.setNotaMedia(calcularNotaMedia(filme1.getAvaliacoes()));
-        filme2.setNotaMedia(calcularNotaMedia(filme2.getAvaliacoes()));
+        filme1.calcularNotaMedia();
+        filme2.calcularNotaMedia();
 
         filmeRepository.saveAll(Arrays.asList(filme1, filme2));
-    }
-    private double calcularNotaMedia(List<AvaliacaoModel> avaliacoes){
-        if (avaliacoes.isEmpty()) {
-            return 0d;
-        }
-        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
-        return somaNotas / avaliacoes.size();
     }
 }

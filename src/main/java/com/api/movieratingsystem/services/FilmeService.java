@@ -27,7 +27,7 @@ public class FilmeService {
 
     public FilmeRecord save(FilmeRecord record){
         FilmeModel filme = new FilmeModel(record);
-        filme.setNotaMedia(calcularNotaMedia(filme.getAvaliacoes()));
+        filme.setNotaMedia(filme.getNotaMedia());
         repository.save(filme);
         return parseFilmeRecord(filme);
     }
@@ -48,22 +48,10 @@ public class FilmeService {
 
     public void deletarComentario(Long id_filme, Long id_avaliacao){
         FilmeModel filme = repository.findById(id_filme).get();
-        List<AvaliacaoModel> avaliacoes = filme.getAvaliacoes();
-        for(int i =0; i < avaliacoes.size(); i++){
-            if(avaliacoes.get(i).getId() == id_avaliacao){
-                avaliacoes.remove(i);
-            }
-        }
-        filme.setNotaMedia(calcularNotaMedia(avaliacoes));
+        filme.deletarComentario(id_avaliacao);
         repository.save(filme);
     }
-    private double calcularNotaMedia(List<AvaliacaoModel> avaliacoes){
-        if (avaliacoes.isEmpty()) {
-            return 0d;
-        }
-        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
-        return somaNotas / avaliacoes.size();
-    }
+
     private FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
         return new FilmeRecord(filmeModel.getId(), filmeModel.getTitulo(), filmeModel.getDiretor(), filmeModel.getLancamento(), filmeModel.getSinopse(), filmeModel.getNotaMedia());
     }
