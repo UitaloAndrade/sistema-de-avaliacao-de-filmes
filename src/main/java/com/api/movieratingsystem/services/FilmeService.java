@@ -30,8 +30,8 @@ public class FilmeService {
         return parseFilmeRecord(filme);
     }
 
-    public FilmeRecord update(Long id, FilmeRecord record){
-        FilmeModel filme = repository.findById(id).get();
+    public FilmeRecord update(FilmeRecord record){
+        FilmeModel filme = repository.findById(record.id()).get();
         filme.setTitulo(record.titulo());
         filme.setDiretor(record.diretor());
         filme.setLancamento(record.lancamento());
@@ -58,7 +58,7 @@ public class FilmeService {
         double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
         return somaNotas / avaliacoes.size();
     }
-    public FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
+    private FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
         return new FilmeRecord(filmeModel.getId(), filmeModel.getTitulo(), filmeModel.getDiretor(), filmeModel.getLancamento(), filmeModel.getSinopse(), filmeModel.getNotaMedia());
     }
 }

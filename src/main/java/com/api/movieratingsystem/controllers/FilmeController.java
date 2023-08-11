@@ -35,9 +35,9 @@ public class FilmeController {
         filme = filmeService.save(filme);
         return ResponseEntity.status(HttpStatus.CREATED).body(filme);
     }
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<FilmeRecord> upadte(@PathVariable Long id, @RequestBody FilmeRecord filme){
-        filme = filmeService.update(id, filme);
+    @PutMapping
+    public ResponseEntity<FilmeRecord> upadte(@RequestBody FilmeRecord filme){
+        filme = filmeService.update(filme);
         return ResponseEntity.ok().body(filme);
     }
 

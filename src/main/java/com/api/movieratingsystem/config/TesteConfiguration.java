@@ -2,6 +2,10 @@ package com.api.movieratingsystem.config;
 
 import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
+import com.api.movieratingsystem.records.AvaliacaoRecord;
+import com.api.movieratingsystem.records.FilmeRecord;
+import com.api.movieratingsystem.repositories.AvaliacaoRepository;
+import com.api.movieratingsystem.repositories.FilmeRepository;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,43 +13,45 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.Arrays;
+
 @Configuration
 @Profile("test")
 public class TesteConfiguration implements CommandLineRunner {
 
     @Autowired
-    private FilmeService filmeService;
+    private FilmeRepository filmeRepository;
     @Autowired
-    private AvaliacaoService avaliacaoService;
+    private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
+    private  FilmeService filmeService;
+
     @Override
     public void run(String... args) throws Exception {
 
         FilmeModel filme1 = new FilmeModel("Harry Potter", "Uitalo", "2001/01/01", "Um filme epico da minha infancia");
         FilmeModel filme2 = new FilmeModel("Velozes e furiosos", "Uitalo", "2001/01/01", "Melhor filme sobre carros");
-        FilmeModel filme3 = new FilmeModel("Barbie", "Uitalo", "2001/01/01", "Novo no cinema");
-        FilmeModel filme4 = new FilmeModel("Hobbit", "Uitalo", "2001/01/01", "Legal");
+
+        filmeRepository.saveAll(Arrays.asList(filme1, filme2));
 
         AvaliacaoModel avaliacao1 = new AvaliacaoModel(null, filme1, 8, "um filme muito bom = av1");
         AvaliacaoModel avaliacao2 = new AvaliacaoModel(null, filme1, 9, "um filme muito bom = av2");
         AvaliacaoModel avaliacao3 = new AvaliacaoModel(null, filme2, 8, "um filme mais ou menos = av3");
-        AvaliacaoModel avaliacao4 = new AvaliacaoModel(null, filme3, 10, "um filme muito bom = av4");
-        AvaliacaoModel avaliacao5 = new AvaliacaoModel(null, filme4, 5, "um filme muito bom = av5");
+        AvaliacaoModel avaliacao4 = new AvaliacaoModel(null, filme2, 10, "um filme muito bom = av4");
+        AvaliacaoModel avaliacao5 = new AvaliacaoModel(null, filme1, 5, "um filme muito bom = av5");
 
-        filme1.getAvaliacoes().add(avaliacao1);
-        filme1.getAvaliacoes().add(avaliacao2);
-        filme2.getAvaliacoes().add(avaliacao3);
-        filme3.getAvaliacoes().add(avaliacao4);
-        filme4.getAvaliacoes().add(avaliacao5);
+        avaliacaoRepository.saveAll(Arrays.asList(avaliacao1, avaliacao2, avaliacao3, avaliacao4, avaliacao5));
 
-        filmeService.save(filmeService.parseFilmeRecord(filme1));
-        filmeService.save(filmeService.parseFilmeRecord(filme2));
-        filmeService.save(filmeService.parseFilmeRecord(filme3));
-        filmeService.save(filmeService.parseFilmeRecord(filme4));
+        filme1.getAvaliacoes().addAll(Arrays.asList(avaliacao1, avaliacao2, avaliacao5));
+        filme2.getAvaliacoes().addAll(Arrays.asList(avaliacao3, avaliacao4));
 
-        avaliacaoService.save(avaliacao1);
-        avaliacaoService.save(avaliacao2);
-        avaliacaoService.save(avaliacao3);
-        avaliacaoService.save(avaliacao4);
-        avaliacaoService.save(avaliacao5);
+        filmeService.atualizarNotaMedia(filme1.getId());
+        filmeService.atualizarNotaMedia(filme2.getId());
+    }
+    private FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
+        return new FilmeRecord(filmeModel.getId(), filmeModel.getTitulo(), filmeModel.getDiretor(), filmeModel.getLancamento(), filmeModel.getSinopse(), filmeModel.getNotaMedia());
+    }
+    private AvaliacaoRecord parseAvaliacaoRecord(AvaliacaoModel obj){
+        return new AvaliacaoRecord(obj.getId(), obj.getFilme(), obj.getNota(), obj.getComentario());
     }
 }

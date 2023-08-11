@@ -1,6 +1,7 @@
 package com.api.movieratingsystem.controllers;
 
 import com.api.movieratingsystem.models.AvaliacaoModel;
+import com.api.movieratingsystem.records.AvaliacaoRecord;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,25 +19,25 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<List<AvaliacaoModel>> findAll(){
-        List<AvaliacaoModel> avaliacoes = avaliacaoService.findAll();
+    public ResponseEntity<List<AvaliacaoRecord>> findAll(){
+        List<AvaliacaoRecord> avaliacoes = avaliacaoService.findAll();
         return ResponseEntity.ok().body(avaliacoes);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoModel> findById(@PathVariable Long id){
-        AvaliacaoModel avaliacao = avaliacaoService.findById(id);
+    public ResponseEntity<AvaliacaoRecord> findById(@PathVariable Long id){
+        AvaliacaoRecord avaliacao = avaliacaoService.findById(id);
         return ResponseEntity.ok().body(avaliacao);
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoModel> save(@RequestBody AvaliacaoModel avaliacao){
+    public ResponseEntity<AvaliacaoRecord> save(@RequestBody AvaliacaoRecord avaliacao){
         avaliacao = avaliacaoService.save(avaliacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
     }
 
     @PutMapping
-    public ResponseEntity<AvaliacaoModel> update(@RequestBody AvaliacaoModel avaliacao){
+    public ResponseEntity<AvaliacaoRecord> update(@RequestBody AvaliacaoRecord avaliacao){
         avaliacao = avaliacaoService.update(avaliacao);
         return ResponseEntity.ok().body(avaliacao);
     }

@@ -1,5 +1,6 @@
 package com.api.movieratingsystem.models;
 
+import com.api.movieratingsystem.records.AvaliacaoRecord;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,4 +22,10 @@ public class AvaliacaoModel implements Serializable {
     private FilmeModel filme;
     private Integer nota;
     private String comentario;
+
+    public AvaliacaoModel(AvaliacaoRecord obj){
+        this.filme = obj.filme();
+        this.nota = obj.nota();
+        this.comentario = obj.comentario();
+    }
 }
