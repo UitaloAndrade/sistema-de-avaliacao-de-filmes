@@ -1,6 +1,7 @@
 package com.api.movieratingsystem.controllers;
 
 import com.api.movieratingsystem.models.FilmeModel;
+import com.api.movieratingsystem.records.FilmeRecord;
 import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,24 +19,24 @@ public class FilmeController {
     private FilmeService filmeService;
 
     @GetMapping
-    public ResponseEntity<List<FilmeModel>> findAll(){
-        List<FilmeModel> filmes = filmeService.findAll();
+    public ResponseEntity<List<FilmeRecord>> findAll(){
+        List<FilmeRecord> filmes = filmeService.findAll();
         return ResponseEntity.ok().body(filmes);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FilmeModel> findById(@PathVariable Long id){
-        FilmeModel filme = filmeService.findById(id);
+    public ResponseEntity<FilmeRecord> findById(@PathVariable Long id){
+        FilmeRecord filme = filmeService.findById(id);
         return ResponseEntity.ok().body(filme);
     }
 
     @PostMapping
-    public ResponseEntity<FilmeModel> save(@RequestBody FilmeModel filme){
+    public ResponseEntity<FilmeRecord> save(@RequestBody FilmeRecord filme){
         filme = filmeService.save(filme);
         return ResponseEntity.status(HttpStatus.CREATED).body(filme);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FilmeModel> upadte(@PathVariable Long id, @RequestBody FilmeModel filme){
+    public ResponseEntity<FilmeRecord> upadte(@PathVariable Long id, @RequestBody FilmeRecord filme){
         filme = filmeService.update(id, filme);
         return ResponseEntity.ok().body(filme);
     }

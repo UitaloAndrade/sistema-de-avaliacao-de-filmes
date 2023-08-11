@@ -25,16 +25,22 @@ public class TesteConfiguration implements CommandLineRunner {
         FilmeModel filme3 = new FilmeModel("Barbie", "Uitalo", "2001/01/01", "Novo no cinema");
         FilmeModel filme4 = new FilmeModel("Hobbit", "Uitalo", "2001/01/01", "Legal");
 
-        filmeService.save(filme1);
-        filmeService.save(filme2);
-        filmeService.save(filme3);
-        filmeService.save(filme4);
-
         AvaliacaoModel avaliacao1 = new AvaliacaoModel(null, filme1, 8, "um filme muito bom = av1");
         AvaliacaoModel avaliacao2 = new AvaliacaoModel(null, filme1, 9, "um filme muito bom = av2");
         AvaliacaoModel avaliacao3 = new AvaliacaoModel(null, filme2, 8, "um filme mais ou menos = av3");
         AvaliacaoModel avaliacao4 = new AvaliacaoModel(null, filme3, 10, "um filme muito bom = av4");
         AvaliacaoModel avaliacao5 = new AvaliacaoModel(null, filme4, 5, "um filme muito bom = av5");
+
+        filme1.getAvaliacoes().add(avaliacao1);
+        filme1.getAvaliacoes().add(avaliacao2);
+        filme2.getAvaliacoes().add(avaliacao3);
+        filme3.getAvaliacoes().add(avaliacao4);
+        filme4.getAvaliacoes().add(avaliacao5);
+
+        filmeService.save(filmeService.parseFilmeRecord(filme1));
+        filmeService.save(filmeService.parseFilmeRecord(filme2));
+        filmeService.save(filmeService.parseFilmeRecord(filme3));
+        filmeService.save(filmeService.parseFilmeRecord(filme4));
 
         avaliacaoService.save(avaliacao1);
         avaliacaoService.save(avaliacao2);

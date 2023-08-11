@@ -34,11 +34,4 @@ public class AvaliacaoService {
         avaliacao.setComentario(obj.getComentario());
         return save(avaliacao);
     }
-//    public void delete(Long id){
-//        AvaliacaoModel avaliacao = avaliacaoRepository.findById(id).get();
-//        FilmeModel filme = avaliacao.getFilme();
-//        filme.getAvaliacoes().remove(avaliacao);
-//        filmeService.atualizarNotaMedia(filme.getId());
-//        avaliacaoRepository.deleteById(avaliacao.getId());
-//    }
 }

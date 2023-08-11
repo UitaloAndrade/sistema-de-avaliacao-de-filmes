@@ -40,10 +40,4 @@ public class AvaliacaoController {
         avaliacao = avaliacaoService.update(avaliacao);
         return ResponseEntity.ok().body(avaliacao);
     }
-
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id){
-//        avaliacaoService.delete(id);
-//        return ResponseEntity.noContent().build();
-//    }
 }

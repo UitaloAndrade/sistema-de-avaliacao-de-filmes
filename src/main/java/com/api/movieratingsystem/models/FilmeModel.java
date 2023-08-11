@@ -1,5 +1,6 @@
 package com.api.movieratingsystem.models;
 
+import com.api.movieratingsystem.records.FilmeRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +18,7 @@ public class FilmeModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     private String titulo;
     private String diretor;
@@ -33,5 +35,12 @@ public class FilmeModel implements Serializable {
         this.diretor = diretor;
         this.lancamento = lancamento;
         this.sinopse = sinopse;
+    }
+
+    public FilmeModel(FilmeRecord obj){
+        this.titulo = obj.titulo();
+        this.diretor = obj.diretor();
+        this.lancamento = obj.lancamento();
+        this.sinopse = obj.sinopse();
     }
 }

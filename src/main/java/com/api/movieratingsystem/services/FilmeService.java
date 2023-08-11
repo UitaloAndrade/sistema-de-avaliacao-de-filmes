@@ -2,12 +2,12 @@ package com.api.movieratingsystem.services;
 
 import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
+import com.api.movieratingsystem.records.FilmeRecord;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FilmeService {
@@ -15,28 +15,29 @@ public class FilmeService {
     @Autowired
     private FilmeRepository repository;
 
-    public List<FilmeModel> findAll(){
-        return repository.findAll();
+    public List<FilmeRecord> findAll(){
+        List<FilmeModel> list = repository.findAll();
+        return list.stream().map(x -> new FilmeRecord(x.getId(), x.getTitulo(), x.getDiretor(), x.getLancamento(), x.getSinopse(), x.getNotaMedia())).toList();
     }
 
-    public FilmeModel findById(Long id){
-        Optional<FilmeModel> filme = repository.findById(id);
-        return filme.get();
-    }
-
-    public FilmeModel save(FilmeModel filme){
-        filme = repository.save(filme);
-        return filme;
-    }
-
-    public FilmeModel update(Long id, FilmeModel obj){
+    public FilmeRecord findById(Long id){
         FilmeModel filme = repository.findById(id).get();
-        filme.setTitulo(obj.getTitulo());
-        filme.setDiretor(obj.getDiretor());
-        filme.setLancamento(obj.getLancamento());
-        filme.setSinopse(obj.getSinopse());
+        return parseFilmeRecord(filme);
+    }
+
+    public FilmeRecord save(FilmeRecord record){
+        FilmeModel filme = repository.save(new FilmeModel(record));
+        return parseFilmeRecord(filme);
+    }
+
+    public FilmeRecord update(Long id, FilmeRecord record){
+        FilmeModel filme = repository.findById(id).get();
+        filme.setTitulo(record.titulo());
+        filme.setDiretor(record.diretor());
+        filme.setLancamento(record.lancamento());
+        filme.setSinopse(record.sinopse());
         filme = repository.save(filme);
-        return filme;
+        return parseFilmeRecord(filme);
     }
 
     public void delete(Long id){
@@ -44,7 +45,7 @@ public class FilmeService {
     }
 
     public void atualizarNotaMedia(Long id){
-        FilmeModel filme = findById(id);
+        FilmeModel filme = repository.findById(id).get();
         filme.setNotaMedia(calcularNotaMedia(filme));
         repository.save(filme);
     }
@@ -56,5 +57,8 @@ public class FilmeService {
         }
         double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
         return somaNotas / avaliacoes.size();
+    }
+    public FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
+        return new FilmeRecord(filmeModel.getId(), filmeModel.getTitulo(), filmeModel.getDiretor(), filmeModel.getLancamento(), filmeModel.getSinopse(), filmeModel.getNotaMedia());
     }
 }

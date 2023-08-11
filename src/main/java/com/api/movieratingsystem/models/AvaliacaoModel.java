@@ -14,6 +14,7 @@ public class AvaliacaoModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "filme_id", nullable = false)
