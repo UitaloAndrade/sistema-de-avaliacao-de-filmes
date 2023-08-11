@@ -35,6 +35,10 @@ public class AvaliacaoService {
         avaliacao = avaliacaoRepository.save(avaliacao);
         return parseAvaliacaoRecord(avaliacao);
     }
+
+    public void delete(Long id){
+        avaliacaoRepository.deleteById(id);
+    }
     private AvaliacaoRecord parseAvaliacaoRecord(AvaliacaoModel obj){
         return new AvaliacaoRecord(obj.getId(), obj.getFilme(), obj.getNota(), obj.getComentario());
     }

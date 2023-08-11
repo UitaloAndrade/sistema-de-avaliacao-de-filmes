@@ -1,6 +1,5 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.records.AvaliacaoRecord;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.models.FilmeModel;
 import com.api.movieratingsystem.records.FilmeRecord;
 import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,12 @@ public class FilmeController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         filmeService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/{id_filme}/{id_avaliacao}")
+    public ResponseEntity<Void> delete(@PathVariable Long id_filme, @PathVariable Long id_avaliacao){
+        filmeService.deletarComentario(id_filme, id_avaliacao);
         return ResponseEntity.noContent().build();
     }
 }

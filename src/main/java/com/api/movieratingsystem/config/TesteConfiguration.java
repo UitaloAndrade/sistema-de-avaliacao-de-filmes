@@ -2,18 +2,15 @@ package com.api.movieratingsystem.config;
 
 import com.api.movieratingsystem.models.AvaliacaoModel;
 import com.api.movieratingsystem.models.FilmeModel;
-import com.api.movieratingsystem.records.AvaliacaoRecord;
-import com.api.movieratingsystem.records.FilmeRecord;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
 import com.api.movieratingsystem.repositories.FilmeRepository;
-import com.api.movieratingsystem.services.AvaliacaoService;
-import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -23,9 +20,6 @@ public class TesteConfiguration implements CommandLineRunner {
     private FilmeRepository filmeRepository;
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
-    @Autowired
-    private  FilmeService filmeService;
-
     @Override
     public void run(String... args) throws Exception {
 
@@ -45,13 +39,16 @@ public class TesteConfiguration implements CommandLineRunner {
         filme1.getAvaliacoes().addAll(Arrays.asList(avaliacao1, avaliacao2, avaliacao5));
         filme2.getAvaliacoes().addAll(Arrays.asList(avaliacao3, avaliacao4));
 
-        filmeService.atualizarNotaMedia(filme1.getId());
-        filmeService.atualizarNotaMedia(filme2.getId());
+        filme1.setNotaMedia(calcularNotaMedia(filme1.getAvaliacoes()));
+        filme2.setNotaMedia(calcularNotaMedia(filme2.getAvaliacoes()));
+
+        filmeRepository.saveAll(Arrays.asList(filme1, filme2));
     }
-    private FilmeRecord parseFilmeRecord(FilmeModel filmeModel){
-        return new FilmeRecord(filmeModel.getId(), filmeModel.getTitulo(), filmeModel.getDiretor(), filmeModel.getLancamento(), filmeModel.getSinopse(), filmeModel.getNotaMedia());
-    }
-    private AvaliacaoRecord parseAvaliacaoRecord(AvaliacaoModel obj){
-        return new AvaliacaoRecord(obj.getId(), obj.getFilme(), obj.getNota(), obj.getComentario());
+    private double calcularNotaMedia(List<AvaliacaoModel> avaliacoes){
+        if (avaliacoes.isEmpty()) {
+            return 0d;
+        }
+        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
+        return somaNotas / avaliacoes.size();
     }
 }
