@@ -44,17 +44,4 @@ public class Filme implements Serializable {
         this.lancamento = obj.lancamento();
         this.sinopse = obj.sinopse();
     }
-
-    public void calcularNotaMedia(){
-        if (avaliacoes.isEmpty()) {
-            this.notaMedia = null;
-        }
-        double somaNotas = avaliacoes.stream().mapToInt(Avaliacao::getNota).sum();
-        this.notaMedia = somaNotas / avaliacoes.size();
-    }
-
-    public void removeAvaliacao(Avaliacao avaliacao){
-        avaliacoes.remove(avaliacao);
-        calcularNotaMedia();
-    }
 }

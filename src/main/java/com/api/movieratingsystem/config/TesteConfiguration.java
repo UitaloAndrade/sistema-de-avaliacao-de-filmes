@@ -3,9 +3,9 @@ package com.api.movieratingsystem.config;
 import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.models.Usuario;
+import com.api.movieratingsystem.repositories.FilmeRepository;
 import com.api.movieratingsystem.repositories.UsuarioRepository;
 import com.api.movieratingsystem.services.AvaliacaoService;
-import com.api.movieratingsystem.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class TesteConfiguration implements CommandLineRunner {
 
     @Autowired
-    private FilmeService filmeService;
+    private FilmeRepository filmeRepository;
     @Autowired
     private AvaliacaoService avaliacaoService;
     @Autowired
@@ -29,8 +29,7 @@ public class TesteConfiguration implements CommandLineRunner {
         Filme filme1 = new Filme("Harry Potter", "Uitalo", "2001/01/01", "Um filme epico da minha infancia");
         Filme filme2 = new Filme("Velozes e furiosos", "Uitalo", "2001/01/01", "Melhor filme sobre carros");
 
-        filmeService.salvar(filme1);
-        filmeService.salvar(filme2);
+        filmeRepository.saveAll(Arrays.asList(filme1, filme2));
 
         Usuario usuario1 = new Usuario("Fernando");
         Usuario usuario2 = new Usuario("Pedro");
@@ -44,10 +43,10 @@ public class TesteConfiguration implements CommandLineRunner {
         Avaliacao avaliacao4 = new Avaliacao(filme2, 10, "um filme muito bom = av4", usuario2);
         Avaliacao avaliacao5 = new Avaliacao(filme1, 5, "um filme muito bom = av5", usuario3);
 
-        avaliacaoService.salvar(filme1.getId(), avaliacao1);
-        avaliacaoService.salvar(filme1.getId(), avaliacao2);
-        avaliacaoService.salvar(filme2.getId(), avaliacao3);
-        avaliacaoService.salvar(filme2.getId(), avaliacao4);
-        avaliacaoService.salvar(filme1.getId(), avaliacao5);
+        avaliacaoService.salvar(avaliacao1);
+        avaliacaoService.salvar(avaliacao2);
+        avaliacaoService.salvar(avaliacao3);
+        avaliacaoService.salvar(avaliacao4);
+        avaliacaoService.salvar(avaliacao5);
     }
 }

@@ -33,12 +33,12 @@ public class FilmeController {
 
     @PostMapping
     public ResponseEntity<FilmeDTO> save(@RequestBody FilmeDTO filmeDTO){
-        Filme filme = filmeService.salvar(filmeDTO.newFilme());
+        Filme filme = filmeService.salvar(new Filme(filmeDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(FilmeDTO.newFilmeDTO(filme));
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity<FilmeDTO> atualizar(@PathVariable Long id, @RequestBody FilmeDTO filmeDTO){
-        Filme filme = filmeService.atualizar(id, filmeDTO.newFilme());
+        Filme filme = filmeService.atualizar(id, new Filme(filmeDTO));
         return ResponseEntity.ok().body(FilmeDTO.newFilmeDTO(filme));
     }
 

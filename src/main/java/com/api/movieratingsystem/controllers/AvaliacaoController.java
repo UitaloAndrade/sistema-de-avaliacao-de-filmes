@@ -31,15 +31,29 @@ public class AvaliacaoController {
         return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoDTO> salvar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
-        Avaliacao avaliacao = avaliacaoService.salvar(id, avaliacaoDTO.newAvaliacao());
+    @GetMapping(value = "/filme/{id}")
+    public ResponseEntity<List<AvaliacaoDTO>> buscarPorFilme(@PathVariable Long id){
+        List<Avaliacao> avaliacoes = avaliacaoService.buscarPorFilme(id);
+        List<AvaliacaoDTO> list = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
+        return ResponseEntity.ok().body(list);
+    }
+    @GetMapping(value = "/usuario/{id}")
+    public ResponseEntity<List<AvaliacaoDTO>> buscarPorUsuario(@PathVariable Long id){
+        List<Avaliacao> avaliacoes = avaliacaoService.buscarPorUsuario(id);
+        List<AvaliacaoDTO> list = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping
+    public ResponseEntity<AvaliacaoDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO){
+        Avaliacao avaliacao = new Avaliacao(avaliacaoDTO);
+        avaliacao = avaliacaoService.salvar(avaliacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<AvaliacaoDTO> atualizar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
-        Avaliacao avaliacao = avaliacaoService.atualizar(id, avaliacaoDTO.newAvaliacao());
+        Avaliacao avaliacao = avaliacaoService.atualizar(id, new Avaliacao(avaliacaoDTO));
         return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
