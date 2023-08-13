@@ -53,8 +53,8 @@ public class Filme implements Serializable {
         this.notaMedia = somaNotas / avaliacoes.size();
     }
 
-    public void removeAvaliacao(Avaliacao avaliacaoModel){
-        avaliacoes.remove(avaliacaoModel);
+    public void removeAvaliacao(Avaliacao avaliacao){
+        avaliacoes.remove(avaliacao);
         calcularNotaMedia();
     }
 }

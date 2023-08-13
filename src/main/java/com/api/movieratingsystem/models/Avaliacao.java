@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "tb_avaliacao")
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode
 public class Avaliacao implements Serializable {
@@ -22,10 +22,20 @@ public class Avaliacao implements Serializable {
     private Filme filme;
     private Integer nota;
     private String comentario;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
+    public Avaliacao(Filme filme, Integer nota, String comentario, Usuario usuario){
+        this.filme = filme;
+        this.nota = nota;
+        this.comentario = comentario;
+        this.usuario = usuario;
+    }
     public Avaliacao(AvaliacaoDTO obj){
         this.filme = obj.filme();
         this.nota = obj.nota();
         this.comentario = obj.comentario();
+        this.usuario = obj.usuario();
     }
 }

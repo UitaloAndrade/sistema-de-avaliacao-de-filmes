@@ -12,15 +12,15 @@ public class FilmeService {
 
     @Autowired
     private FilmeRepository repository;
-    public List<Filme> findAll() {
+    public List<Filme> buscarPorTodos() {
         return repository.findAll();
     }
 
-    public Filme findById(Long id) {
+    public Filme buscarPorId(Long id) {
         return repository.findById(id).get();
     }
 
-    public Filme save(Filme filme) {
+    public Filme salvar(Filme filme) {
         return repository.save(filme);
     }
 
@@ -33,7 +33,13 @@ public class FilmeService {
         return repository.save(filme);
     }
 
-    public void delete(Long id) {
+    public void deletar(Long id) {
         repository.deleteById(id);
+    }
+
+    public void atualizarNotaMedia(Long id){
+        Filme filme = buscarPorId(id);
+        filme.calcularNotaMedia();
+        repository.save(filme);
     }
 }

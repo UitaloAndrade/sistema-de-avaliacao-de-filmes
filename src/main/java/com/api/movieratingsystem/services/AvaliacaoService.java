@@ -16,6 +16,8 @@ public class AvaliacaoService {
     private AvaliacaoRepository avaliacaoRepository;
     @Autowired
     private FilmeRepository filmeRepository;
+    @Autowired
+    private FilmeService filmeService;
 
     public List<Avaliacao> buscarTodos(){
         return avaliacaoRepository.findAll();
@@ -25,11 +27,11 @@ public class AvaliacaoService {
         return avaliacaoRepository.findById(id).get();
     }
 
-    public Avaliacao salvar(Avaliacao avaliacao){
+    public Avaliacao salvar(Long id, Avaliacao avaliacao){
+//        Filme filme = filmeService.findById(id);
+//        avaliacao.setFilme(filme);
         avaliacao = avaliacaoRepository.save(avaliacao);
-        avaliacao.getFilme().getAvaliacoes().add(avaliacao);
-        avaliacao.getFilme().calcularNotaMedia();
-        filmeRepository.save(avaliacao.getFilme());
+        filmeService.atualizarNotaMedia(id);
         return avaliacao;
     }
 

@@ -21,7 +21,7 @@ public class AvaliacaoController {
     @GetMapping
     public ResponseEntity<List<AvaliacaoDTO>> buscarTodos(){
         List<Avaliacao> avaliacoes = avaliacaoService.buscarTodos();
-        List<AvaliacaoDTO> avaliacaoDTO = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario())).toList();
+        List<AvaliacaoDTO> avaliacaoDTO = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
         return ResponseEntity.ok().body(avaliacaoDTO);
     }
 
@@ -31,9 +31,9 @@ public class AvaliacaoController {
         return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
-    @PostMapping
-    public ResponseEntity<AvaliacaoDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO){
-        Avaliacao avaliacao = avaliacaoService.salvar(avaliacaoDTO.newAvaliacao());
+    @PostMapping(value = "/{id}")
+    public ResponseEntity<AvaliacaoDTO> salvar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
+        Avaliacao avaliacao = avaliacaoService.salvar(id, avaliacaoDTO.newAvaliacao());
         return ResponseEntity.status(HttpStatus.CREATED).body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
