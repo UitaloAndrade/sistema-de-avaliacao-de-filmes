@@ -1,6 +1,6 @@
 package com.api.movieratingsystem.models;
 
-import com.api.movieratingsystem.records.AvaliacaoRecord;
+import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode
-public class AvaliacaoModel implements Serializable {
+public class Avaliacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +19,11 @@ public class AvaliacaoModel implements Serializable {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "filme_id", nullable = false)
-    private FilmeModel filme;
+    private Filme filme;
     private Integer nota;
     private String comentario;
 
-    public AvaliacaoModel(AvaliacaoRecord obj){
+    public Avaliacao(AvaliacaoDTO obj){
         this.filme = obj.filme();
         this.nota = obj.nota();
         this.comentario = obj.comentario();

@@ -1,8 +1,9 @@
 package com.api.movieratingsystem.services;
 
-import com.api.movieratingsystem.models.AvaliacaoModel;
-import com.api.movieratingsystem.records.AvaliacaoRecord;
+import com.api.movieratingsystem.models.Avaliacao;
+import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
+import com.api.movieratingsystem.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,33 +14,40 @@ public class AvaliacaoService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
-    public List<AvaliacaoRecord> findAll(){
-        List<AvaliacaoModel> list= avaliacaoRepository.findAll();
-        return list.stream().map(x -> new AvaliacaoRecord(x.getId(), x.getFilme(), x.getNota(), x.getComentario())).toList();
+    @Autowired
+    private FilmeRepository filmeRepository;
+
+    public List<Avaliacao> buscarTodos(){
+        return avaliacaoRepository.findAll();
     }
 
-    public AvaliacaoRecord findById(Long id){
-        AvaliacaoModel avaliacao = avaliacaoRepository.findById(id).get();
-        return parseAvaliacaoRecord(avaliacao);
+    public Avaliacao buscarPorId(Long id){
+        return avaliacaoRepository.findById(id).get();
     }
 
-    public AvaliacaoRecord save(AvaliacaoRecord record){
-        AvaliacaoModel avaliacao = avaliacaoRepository.save(new AvaliacaoModel(record));
-        return parseAvaliacaoRecord(avaliacao);
-    }
-
-    public AvaliacaoRecord update(AvaliacaoRecord obj){
-        AvaliacaoModel avaliacao = avaliacaoRepository.findById(obj.id()).get();
-        avaliacao.setNota(obj.nota());
-        avaliacao.setComentario(obj.comentario());
+    public Avaliacao salvar(Avaliacao avaliacao){
         avaliacao = avaliacaoRepository.save(avaliacao);
-        return parseAvaliacaoRecord(avaliacao);
+        avaliacao.getFilme().getAvaliacoes().add(avaliacao);
+        avaliacao.getFilme().calcularNotaMedia();
+        filmeRepository.save(avaliacao.getFilme());
+        return avaliacao;
     }
 
-    public void delete(Long id){
-        avaliacaoRepository.deleteById(id);
+    public Avaliacao atualizar(Long id, Avaliacao obj){
+        Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
+        avaliacao.setNota(obj.getNota());
+        avaliacao.setComentario(obj.getComentario());
+        avaliacao.getFilme().getAvaliacoes().add(avaliacao);
+        avaliacao.getFilme().calcularNotaMedia();
+        filmeRepository.save(avaliacao.getFilme());
+        avaliacao = avaliacaoRepository.save(avaliacao);
+        return avaliacao;
     }
-    private AvaliacaoRecord parseAvaliacaoRecord(AvaliacaoModel obj){
-        return new AvaliacaoRecord(obj.getId(), obj.getFilme(), obj.getNota(), obj.getComentario());
+
+    public void deletar(Long id){
+        Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
+        Filme filme = avaliacao.getFilme();
+        filme.removeAvaliacao(avaliacao);
+        filmeRepository.save(filme);
     }
 }

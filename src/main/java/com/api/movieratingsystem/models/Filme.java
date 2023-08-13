@@ -1,6 +1,6 @@
 package com.api.movieratingsystem.models;
 
-import com.api.movieratingsystem.records.FilmeRecord;
+import com.api.movieratingsystem.models.dto.FilmeDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode
-public class FilmeModel implements Serializable {
+public class Filme implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,16 +28,17 @@ public class FilmeModel implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Setter(AccessLevel.NONE)
-    private List<AvaliacaoModel> avaliacoes = new ArrayList<>();
+    @EqualsAndHashCode.Exclude
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    public FilmeModel(String titulo, String diretor, String lancamento, String sinopse){
+    public Filme(String titulo, String diretor, String lancamento, String sinopse){
         this.titulo = titulo;
         this.diretor = diretor;
         this.lancamento = lancamento;
         this.sinopse = sinopse;
     }
 
-    public FilmeModel(FilmeRecord obj){
+    public Filme(FilmeDTO obj){
         this.titulo = obj.titulo();
         this.diretor = obj.diretor();
         this.lancamento = obj.lancamento();
@@ -46,18 +47,14 @@ public class FilmeModel implements Serializable {
 
     public void calcularNotaMedia(){
         if (avaliacoes.isEmpty()) {
-            this.notaMedia = 0d;
+            this.notaMedia = null;
         }
-        double somaNotas = avaliacoes.stream().mapToInt(AvaliacaoModel::getNota).sum();
+        double somaNotas = avaliacoes.stream().mapToInt(Avaliacao::getNota).sum();
         this.notaMedia = somaNotas / avaliacoes.size();
     }
 
-    public void deletarComentario(Long id_avaliacao) {
-        for (int i = 0; i < avaliacoes.size(); i++) {
-            if (avaliacoes.get(i).getId() == id_avaliacao) {
-                avaliacoes.remove(i);
-            }
-        }
+    public void removeAvaliacao(Avaliacao avaliacaoModel){
+        avaliacoes.remove(avaliacaoModel);
         calcularNotaMedia();
     }
 }

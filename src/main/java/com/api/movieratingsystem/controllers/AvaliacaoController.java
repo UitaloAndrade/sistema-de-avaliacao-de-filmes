@@ -1,6 +1,7 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.records.AvaliacaoRecord;
+import com.api.movieratingsystem.models.Avaliacao;
+import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,26 +19,33 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<List<AvaliacaoRecord>> findAll(){
-        List<AvaliacaoRecord> avaliacoes = avaliacaoService.findAll();
-        return ResponseEntity.ok().body(avaliacoes);
+    public ResponseEntity<List<AvaliacaoDTO>> buscarTodos(){
+        List<Avaliacao> avaliacoes = avaliacaoService.buscarTodos();
+        List<AvaliacaoDTO> avaliacaoDTO = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario())).toList();
+        return ResponseEntity.ok().body(avaliacaoDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoRecord> findById(@PathVariable Long id){
-        AvaliacaoRecord avaliacao = avaliacaoService.findById(id);
-        return ResponseEntity.ok().body(avaliacao);
+    public ResponseEntity<AvaliacaoDTO> buscarPorId(@PathVariable Long id){
+        Avaliacao avaliacao = avaliacaoService.buscarPorId(id);
+        return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoRecord> save(@RequestBody AvaliacaoRecord avaliacao){
-        avaliacao = avaliacaoService.save(avaliacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
+    public ResponseEntity<AvaliacaoDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO){
+        Avaliacao avaliacao = avaliacaoService.salvar(avaliacaoDTO.newAvaliacao());
+        return ResponseEntity.status(HttpStatus.CREATED).body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
     }
 
-    @PutMapping
-    public ResponseEntity<AvaliacaoRecord> update(@RequestBody AvaliacaoRecord avaliacao){
-        avaliacao = avaliacaoService.update(avaliacao);
-        return ResponseEntity.ok().body(avaliacao);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AvaliacaoDTO> atualizar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
+        Avaliacao avaliacao = avaliacaoService.atualizar(id, avaliacaoDTO.newAvaliacao());
+        return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
+        avaliacaoService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
