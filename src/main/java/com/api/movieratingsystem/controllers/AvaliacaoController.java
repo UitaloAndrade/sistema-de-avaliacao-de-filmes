@@ -2,6 +2,7 @@ package com.api.movieratingsystem.controllers;
 
 import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
+import com.api.movieratingsystem.models.dto.AvaliacaoRespostaDTO;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,42 +20,41 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<List<AvaliacaoDTO>> buscarTodos(){
+    public ResponseEntity<List<AvaliacaoRespostaDTO>> buscarTodos(){
         List<Avaliacao> avaliacoes = avaliacaoService.buscarTodos();
-        List<AvaliacaoDTO> avaliacaoDTO = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
-        return ResponseEntity.ok().body(avaliacaoDTO);
+        List<AvaliacaoRespostaDTO> avaliacaoRespostaDTO = avaliacoes.stream().map(AvaliacaoRespostaDTO::new).toList();
+        return ResponseEntity.ok().body(avaliacaoRespostaDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoDTO> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<AvaliacaoRespostaDTO> buscarPorId(@PathVariable Long id){
         Avaliacao avaliacao = avaliacaoService.buscarPorId(id);
-        return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
+        return ResponseEntity.ok().body(new AvaliacaoRespostaDTO(avaliacao));
     }
 
     @GetMapping(value = "/filme/{id}")
-    public ResponseEntity<List<AvaliacaoDTO>> buscarPorFilme(@PathVariable Long id){
+    public ResponseEntity<List<AvaliacaoRespostaDTO>> buscarPorFilme(@PathVariable Long id){
         List<Avaliacao> avaliacoes = avaliacaoService.buscarPorFilme(id);
-        List<AvaliacaoDTO> list = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
-        return ResponseEntity.ok().body(list);
+        List<AvaliacaoRespostaDTO> avaliacaoRespostaDTO = avaliacoes.stream().map(AvaliacaoRespostaDTO::new).toList();
+        return ResponseEntity.ok().body(avaliacaoRespostaDTO);
     }
     @GetMapping(value = "/usuario/{id}")
-    public ResponseEntity<List<AvaliacaoDTO>> buscarPorUsuario(@PathVariable Long id){
+    public ResponseEntity<List<AvaliacaoRespostaDTO>> buscarPorUsuario(@PathVariable Long id){
         List<Avaliacao> avaliacoes = avaliacaoService.buscarPorUsuario(id);
-        List<AvaliacaoDTO> list = avaliacoes.stream().map(x -> new AvaliacaoDTO(x.getId(), x.getFilme(), x.getNota(), x.getComentario(), x.getUsuario())).toList();
-        return ResponseEntity.ok().body(list);
+        List<AvaliacaoRespostaDTO> avaliacaoRespostaDTO = avaliacoes.stream().map(AvaliacaoRespostaDTO::new).toList();
+        return ResponseEntity.ok().body(avaliacaoRespostaDTO);
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO){
-        Avaliacao avaliacao = new Avaliacao(avaliacaoDTO);
-        avaliacao = avaliacaoService.salvar(avaliacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
+    public ResponseEntity<AvaliacaoRespostaDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO){
+        Avaliacao avaliacao = avaliacaoService.salvar(new Avaliacao(avaliacaoDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AvaliacaoRespostaDTO(avaliacao));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoDTO> atualizar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
+    public ResponseEntity<AvaliacaoRespostaDTO> atualizar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO){
         Avaliacao avaliacao = avaliacaoService.atualizar(id, new Avaliacao(avaliacaoDTO));
-        return ResponseEntity.ok().body(AvaliacaoDTO.newAvaliacaoDTO(avaliacao));
+        return ResponseEntity.ok().body(new AvaliacaoRespostaDTO(avaliacao));
     }
 
     @DeleteMapping(value = "/{id}")

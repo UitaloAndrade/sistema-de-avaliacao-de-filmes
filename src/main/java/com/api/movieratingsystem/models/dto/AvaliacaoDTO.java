@@ -5,7 +5,7 @@ import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.models.Usuario;
 
 public record AvaliacaoDTO(Long id, Filme filme, Integer nota, String comentario, Usuario usuario) {
-    public static AvaliacaoDTO newAvaliacaoDTO(Avaliacao avaliacao) {
-        return new AvaliacaoDTO(avaliacao.getId(), avaliacao.getFilme(), avaliacao.getNota(), avaliacao.getComentario(), avaliacao.getUsuario());
+    public AvaliacaoDTO(Avaliacao avaliacao) {
+        this(avaliacao.getId(), avaliacao.getFilme(), avaliacao.getNota(), avaliacao.getComentario(), avaliacao.getUsuario());
     }
 }
