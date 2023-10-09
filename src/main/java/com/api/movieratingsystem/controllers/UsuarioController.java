@@ -3,6 +3,10 @@ package com.api.movieratingsystem.controllers;
 import com.api.movieratingsystem.models.Usuario;
 import com.api.movieratingsystem.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,8 +22,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> buscarPorTodos(){
-        List<Usuario> list = usuarioService.buscarPorTodos();
+    public ResponseEntity<Page<Usuario>> buscarPorTodos(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<Usuario> list = usuarioService.buscarPorTodos(pageable);
         return ResponseEntity.ok().body(list);
     }
 

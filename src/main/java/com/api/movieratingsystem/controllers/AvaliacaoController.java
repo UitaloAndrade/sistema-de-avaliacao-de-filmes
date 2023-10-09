@@ -5,6 +5,10 @@ import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
 import com.api.movieratingsystem.models.dto.AvaliacaoRespostaDTO;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,10 +24,9 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<List<AvaliacaoRespostaDTO>> buscarTodos(){
-        List<Avaliacao> avaliacoes = avaliacaoService.buscarTodos();
-        List<AvaliacaoRespostaDTO> avaliacaoRespostaDTO = avaliacoes.stream().map(AvaliacaoRespostaDTO::new).toList();
-        return ResponseEntity.ok().body(avaliacaoRespostaDTO);
+    public ResponseEntity<Page<AvaliacaoRespostaDTO>> buscarTodos(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<Avaliacao> avaliacoes = avaliacaoService.buscarTodos(pageable);
+        return ResponseEntity.ok().body(avaliacoes.map(AvaliacaoRespostaDTO::new));
     }
 
     @GetMapping(value = "/{id}")

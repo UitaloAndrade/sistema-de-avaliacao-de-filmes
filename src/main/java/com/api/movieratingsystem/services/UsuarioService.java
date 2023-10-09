@@ -3,6 +3,8 @@ package com.api.movieratingsystem.services;
 import com.api.movieratingsystem.models.Usuario;
 import com.api.movieratingsystem.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +15,8 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> buscarPorTodos(){
-        return usuarioRepository.findAll();
+    public Page<Usuario> buscarPorTodos(Pageable pageable){
+        return usuarioRepository.findAll(pageable);
     }
 
     public Usuario buscarPorId(Long id){
