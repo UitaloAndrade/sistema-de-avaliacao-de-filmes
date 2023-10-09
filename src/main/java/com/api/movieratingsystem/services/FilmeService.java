@@ -4,6 +4,8 @@ import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +15,8 @@ public class FilmeService {
 
     @Autowired
     private FilmeRepository repository;
-    public List<Filme> buscarPorTodos() {
-        return repository.findAll();
+    public Page<Filme> buscarPorTodos(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Filme buscarPorId(Long id) {

@@ -26,8 +26,4 @@ public class Usuario implements Serializable {
     public Usuario(String nome){
         this.nome = nome;
     }
-
-    public void deletarAvaliacao(Avaliacao avaliacao){
-        avaliacoes.remove(avaliacao);
-    }
 }

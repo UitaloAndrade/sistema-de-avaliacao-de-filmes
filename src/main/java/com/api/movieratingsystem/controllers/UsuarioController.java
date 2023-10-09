@@ -18,19 +18,19 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAll(){
+    public ResponseEntity<List<Usuario>> buscarPorTodos(){
         List<Usuario> list = usuarioService.buscarPorTodos();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id){
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.buscarPorId(id);
         return ResponseEntity.ok().body(usuario);
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> save(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){
         usuario = usuarioService.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
