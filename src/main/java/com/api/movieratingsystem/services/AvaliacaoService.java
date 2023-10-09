@@ -4,9 +4,8 @@ import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.models.Usuario;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
-import com.api.movieratingsystem.repositories.FilmeRepository;
-import com.api.movieratingsystem.repositories.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,15 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AvaliacaoService {
 
-    @Autowired
     private AvaliacaoRepository avaliacaoRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private FilmeRepository filmeRepository;
-    @Autowired
+    private UsuarioService usuarioService;
     private FilmeService filmeService;
 
     public Page<Avaliacao> buscarTodos(Pageable pageable){
@@ -34,17 +29,18 @@ public class AvaliacaoService {
     }
 
     public List<Avaliacao> buscarPorFilme(Long id){
-        Filme filme = filmeRepository.findById(id).get();
+        Filme filme = filmeService.buscarPorId(id);
         return avaliacaoRepository.findByFilme(filme);
     }
     public List<Avaliacao> buscarPorUsuario(Long id){
-        Usuario usuario = usuarioRepository.findById(id).get();
+        Usuario usuario = usuarioService.buscarPorId(id);
         return avaliacaoRepository.findByUsuario(usuario);
     }
 
+    @Transactional
     public Avaliacao salvar(Avaliacao avaliacao){
-        Filme filme = filmeRepository.findById(avaliacao.getFilme().getId()).get();
-        Usuario usuario = usuarioRepository.findById(avaliacao.getUsuario().getId()).get();
+        Filme filme = filmeService.buscarPorId(avaliacao.getFilme().getId());
+        Usuario usuario = usuarioService.buscarPorId(avaliacao.getUsuario().getId());
         avaliacao.setUsuario(usuario);
         avaliacao.setFilme(filme);
         avaliacaoRepository.save(avaliacao);
@@ -52,6 +48,7 @@ public class AvaliacaoService {
         return avaliacao;
     }
 
+    @Transactional
     public Avaliacao atualizar(Long id, Avaliacao obj){
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
         avaliacao.setNota(obj.getNota());
@@ -61,11 +58,12 @@ public class AvaliacaoService {
         return avaliacao;
     }
 
+    @Transactional
     public void deletar(Long id){
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
         Filme filme = avaliacao.getFilme();
         filme.getAvaliacoes().remove(avaliacao);
-        filmeRepository.save(filme);
+        filmeService.salvar(filme);
         filmeService.atualizarNotaMedia(filme.getId());
     }
 }

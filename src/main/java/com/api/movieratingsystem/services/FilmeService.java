@@ -3,7 +3,8 @@ package com.api.movieratingsystem.services;
 import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.repositories.FilmeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class FilmeService {
 
-    @Autowired
     private FilmeRepository repository;
     public Page<Filme> buscarPorTodos(Pageable pageable) {
         return repository.findAll(pageable);
@@ -23,10 +24,12 @@ public class FilmeService {
         return repository.findById(id).get();
     }
 
+    @Transactional
     public Filme salvar(Filme filme) {
         return repository.save(filme);
     }
 
+    @Transactional
     public Filme atualizar(Long id, Filme obj) {
         Filme filme = repository.findById(id).get();
         filme.setTitulo(obj.getTitulo());
@@ -36,10 +39,12 @@ public class FilmeService {
         return repository.save(filme);
     }
 
+    @Transactional
     public void deletar(Long id) {
         repository.deleteById(id);
     };
 
+    @Transactional
     public void atualizarNotaMedia(Long id){
         Filme filme = repository.findById(id).get();
         List<Avaliacao> list = filme.getAvaliacoes();
