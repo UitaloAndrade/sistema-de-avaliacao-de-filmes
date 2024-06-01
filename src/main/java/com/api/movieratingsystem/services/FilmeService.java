@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -21,7 +20,7 @@ public class FilmeService {
     }
 
     public Filme buscarPorId(Long id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Filme não encontrado!"));
     }
 
     @Transactional
@@ -31,7 +30,7 @@ public class FilmeService {
 
     @Transactional
     public Filme atualizar(Long id, Filme obj) {
-        Filme filme = repository.findById(id).get();
+        Filme filme = repository.findById(id).orElseThrow(() -> new RuntimeException("Filme não encontrado!"));
         filme.setTitulo(obj.getTitulo());
         filme.setDiretor(obj.getDiretor());
         filme.setLancamento(obj.getLancamento());
@@ -46,7 +45,7 @@ public class FilmeService {
 
     @Transactional
     public void atualizarNotaMedia(Long id){
-        Filme filme = repository.findById(id).get();
+        Filme filme = repository.findById(id).orElseThrow(() -> new RuntimeException("Filme não encontrado ao atualizar nota!"));
         List<Avaliacao> list = filme.getAvaliacoes();
         double somaNotas = list.stream().mapToInt(Avaliacao::getNota).sum();
         filme.setNotaMedia( somaNotas / list.size());
