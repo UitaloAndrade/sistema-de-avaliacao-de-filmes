@@ -1,8 +1,8 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.models.dto.AunthenticationDTO;
-import com.api.movieratingsystem.models.dto.LoginResponseDTO;
-import com.api.movieratingsystem.models.dto.RegistrerDTO;
+import com.api.movieratingsystem.models.usuario.dtos.AunthenticationDTO;
+import com.api.movieratingsystem.models.usuario.dtos.LoginResponseDTO;
+import com.api.movieratingsystem.models.usuario.dtos.RegistrerDTO;
 import com.api.movieratingsystem.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

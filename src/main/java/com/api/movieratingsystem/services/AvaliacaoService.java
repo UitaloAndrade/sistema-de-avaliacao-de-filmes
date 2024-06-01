@@ -1,11 +1,10 @@
 package com.api.movieratingsystem.services;
 
-import com.api.movieratingsystem.models.Avaliacao;
-import com.api.movieratingsystem.models.Filme;
-import com.api.movieratingsystem.models.Usuario;
-import com.api.movieratingsystem.models.dto.AtualizarAvaliacao;
-import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
-import com.api.movieratingsystem.models.dto.RegistrerAvaliacaoDTO;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
+import com.api.movieratingsystem.models.filme.Filme;
+import com.api.movieratingsystem.models.usuario.Usuario;
+import com.api.movieratingsystem.models.avaliacao.dtos.AtualizarAvaliacao;
+import com.api.movieratingsystem.models.avaliacao.dtos.RegistrerAvaliacaoDTO;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
 import com.api.movieratingsystem.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

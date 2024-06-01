@@ -1,10 +1,9 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.models.Avaliacao;
-import com.api.movieratingsystem.models.dto.AtualizarAvaliacao;
-import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
-import com.api.movieratingsystem.models.dto.AvaliacaoRespostaDTO;
-import com.api.movieratingsystem.models.dto.RegistrerAvaliacaoDTO;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
+import com.api.movieratingsystem.models.avaliacao.dtos.AtualizarAvaliacao;
+import com.api.movieratingsystem.models.avaliacao.dtos.AvaliacaoRespostaDTO;
+import com.api.movieratingsystem.models.avaliacao.dtos.RegistrerAvaliacaoDTO;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

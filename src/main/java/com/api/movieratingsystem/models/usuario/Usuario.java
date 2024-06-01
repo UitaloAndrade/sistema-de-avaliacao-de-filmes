@@ -1,6 +1,7 @@
-package com.api.movieratingsystem.models;
+package com.api.movieratingsystem.models.usuario;
 
-import com.api.movieratingsystem.models.enums.Perfil;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
+import com.api.movieratingsystem.models.usuario.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

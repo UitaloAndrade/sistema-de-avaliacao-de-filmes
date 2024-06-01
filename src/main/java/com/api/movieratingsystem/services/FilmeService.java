@@ -1,7 +1,7 @@
 package com.api.movieratingsystem.services;
 
-import com.api.movieratingsystem.models.Avaliacao;
-import com.api.movieratingsystem.models.Filme;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
+import com.api.movieratingsystem.models.filme.Filme;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

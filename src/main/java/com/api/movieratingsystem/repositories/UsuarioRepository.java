@@ -1,8 +1,7 @@
 package com.api.movieratingsystem.repositories;
 
-import com.api.movieratingsystem.models.Usuario;
+import com.api.movieratingsystem.models.usuario.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository

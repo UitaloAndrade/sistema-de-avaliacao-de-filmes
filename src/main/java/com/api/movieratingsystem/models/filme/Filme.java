@@ -1,6 +1,7 @@
-package com.api.movieratingsystem.models;
+package com.api.movieratingsystem.models.filme;
 
-import com.api.movieratingsystem.models.dto.FilmeDTO;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
+import com.api.movieratingsystem.models.filme.dtos.FilmeDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

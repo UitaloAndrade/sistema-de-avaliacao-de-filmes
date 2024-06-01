@@ -1,6 +1,7 @@
-package com.api.movieratingsystem.models;
+package com.api.movieratingsystem.models.avaliacao;
 
-import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
+import com.api.movieratingsystem.models.filme.Filme;
+import com.api.movieratingsystem.models.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 

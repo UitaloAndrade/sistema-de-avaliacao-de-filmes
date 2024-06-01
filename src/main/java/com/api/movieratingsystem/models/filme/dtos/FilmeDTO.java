@@ -1,6 +1,6 @@
-package com.api.movieratingsystem.models.dto;
+package com.api.movieratingsystem.models.filme.dtos;
 
-import com.api.movieratingsystem.models.Filme;
+import com.api.movieratingsystem.models.filme.Filme;
 
 import java.time.LocalDate;
 

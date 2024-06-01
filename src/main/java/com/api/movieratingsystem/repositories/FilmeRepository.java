@@ -1,6 +1,6 @@
 package com.api.movieratingsystem.repositories;
 
-import com.api.movieratingsystem.models.Filme;
+import com.api.movieratingsystem.models.filme.Filme;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

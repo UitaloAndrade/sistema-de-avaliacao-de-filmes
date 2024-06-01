@@ -1,7 +1,7 @@
 package com.api.movieratingsystem.controllers;
 
-import com.api.movieratingsystem.models.Filme;
-import com.api.movieratingsystem.models.dto.FilmeDTO;
+import com.api.movieratingsystem.models.filme.Filme;
+import com.api.movieratingsystem.models.filme.dtos.FilmeDTO;
 import com.api.movieratingsystem.services.FilmeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

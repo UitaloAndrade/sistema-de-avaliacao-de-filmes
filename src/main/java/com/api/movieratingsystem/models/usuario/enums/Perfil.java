@@ -1,4 +1,4 @@
-package com.api.movieratingsystem.models.enums;
+package com.api.movieratingsystem.models.usuario.enums;
 
 public enum Perfil {
     ADMIN("admin"),

@@ -1,8 +1,6 @@
-package com.api.movieratingsystem.models.dto;
+package com.api.movieratingsystem.models.avaliacao.dtos;
 
-import com.api.movieratingsystem.models.Avaliacao;
-import com.api.movieratingsystem.models.Filme;
-import com.api.movieratingsystem.models.Usuario;
+import com.api.movieratingsystem.models.avaliacao.Avaliacao;
 
 public record AvaliacaoDTO(Long id, Long filme, Integer nota, String comentario, Long usuario) {
     public AvaliacaoDTO(Avaliacao avaliacao) {
