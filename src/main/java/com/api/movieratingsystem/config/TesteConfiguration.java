@@ -1,8 +1,5 @@
 package com.api.movieratingsystem.config;
 
-import com.api.movieratingsystem.models.Avaliacao;
-import com.api.movieratingsystem.models.Filme;
-import com.api.movieratingsystem.models.Usuario;
 import com.api.movieratingsystem.repositories.FilmeRepository;
 import com.api.movieratingsystem.repositories.UsuarioRepository;
 import com.api.movieratingsystem.services.AvaliacaoService;
@@ -10,8 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import java.util.Arrays;
 
 @Configuration
 @Profile("test")
@@ -24,9 +19,9 @@ public class TesteConfiguration implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        Filme filme1 = new Filme("Filme 01", "Diretor 01", "2001/01/01", "Sinopse 01");
-        Filme filme2 = new Filme("Filme 02", "Diretor 02", "2001/01/01", "Sinopse 02");
+/*
+        Filme filme1 = new Filme("Filme 01", "Diretor 01", LocalDate.parse("2024-05-22"), "Sinopse 01");
+        Filme filme2 = new Filme("Filme 02", "Diretor 02", LocalDate.parse("2012-02-17"), "Sinopse 02");
 
         filmeRepository.saveAll(Arrays.asList(filme1, filme2));
 
@@ -46,6 +41,6 @@ public class TesteConfiguration implements CommandLineRunner {
         avaliacaoService.salvar(avaliacao2);
         avaliacaoService.salvar(avaliacao3);
         avaliacaoService.salvar(avaliacao4);
-        avaliacaoService.salvar(avaliacao5);
+        avaliacaoService.salvar(avaliacao5);*/
     }
 }

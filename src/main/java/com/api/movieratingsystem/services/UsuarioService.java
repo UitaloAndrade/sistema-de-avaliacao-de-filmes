@@ -1,36 +1,41 @@
 package com.api.movieratingsystem.services;
 
+import com.api.movieratingsystem.config.security.Token;
 import com.api.movieratingsystem.models.Usuario;
+import com.api.movieratingsystem.models.dto.AunthenticationDTO;
+import com.api.movieratingsystem.models.dto.LoginResponseDTO;
+import com.api.movieratingsystem.models.dto.RegistrerDTO;
 import com.api.movieratingsystem.repositories.UsuarioRepository;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
-@AllArgsConstructor
 public class UsuarioService {
 
-    private UsuarioRepository usuarioRepository;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    UsuarioRepository repository;
+    @Autowired
+    private Token tokenService;
 
-    public Page<Usuario> buscarPorTodos(Pageable pageable){
-        return usuarioRepository.findAll(pageable);
+    public void novoUsuario(RegistrerDTO data) {
+        String encryptedPassowrd = new BCryptPasswordEncoder().encode(data.senha());
+        Usuario usuario = new Usuario(data.nome(), data.email(), encryptedPassowrd, data.perfil());
+        this.repository.save(usuario);
     }
 
-    public Usuario buscarPorId(Long id){
-        return usuarioRepository.findById(id).get();
-    }
+    public LoginResponseDTO login(AunthenticationDTO data) {
 
-    @Transactional
-    public Usuario salvar(Usuario usuario){
-        return usuarioRepository.save(usuario);
-    }
+        var userNamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
+        var auth = authenticationManager.authenticate(userNamePassword);
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 
-    @Transactional
-    public Usuario atualizar(Long id, Usuario obj){
-        Usuario usuario = buscarPorId(id);
-        usuario.setNome(obj.getNome());
-        return usuarioRepository.save(usuario);
+        return new LoginResponseDTO(token);
     }
 }
