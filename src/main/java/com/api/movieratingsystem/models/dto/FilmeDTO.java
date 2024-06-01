@@ -2,9 +2,12 @@ package com.api.movieratingsystem.models.dto;
 
 import com.api.movieratingsystem.models.Filme;
 
-public record FilmeDTO(Long id, String titulo, String diretor, String lancamento, String sinopse, Double notaMedia) {
+import java.time.LocalDate;
+
+public record FilmeDTO(String titulo, String diretor, LocalDate lancamento, String sinopse, Double notaMedia) {
 
    public FilmeDTO(Filme filme){
-       this(filme.getId(), filme.getTitulo(), filme.getDiretor(), filme.getLancamento(), filme.getSinopse(), filme.getNotaMedia());
+
+       this(filme.getTitulo(), filme.getDiretor(), filme.getLancamento(), filme.getSinopse(), filme.getNotaMedia());
    }
 }

@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,7 @@ public class Filme implements Serializable {
     private Long id;
     private String titulo;
     private String diretor;
-    private String lancamento;
+    private LocalDate lancamento;
     private String sinopse;
     private Double notaMedia;
     @JsonIgnore
@@ -31,7 +33,7 @@ public class Filme implements Serializable {
     @EqualsAndHashCode.Exclude
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    public Filme(String titulo, String diretor, String lancamento, String sinopse){
+    public Filme(String titulo, String diretor, LocalDate lancamento, String sinopse){
         this.titulo = titulo;
         this.diretor = diretor;
         this.lancamento = lancamento;
