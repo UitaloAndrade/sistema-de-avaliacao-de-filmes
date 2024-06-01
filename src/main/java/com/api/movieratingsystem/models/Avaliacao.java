@@ -32,10 +32,4 @@ public class Avaliacao implements Serializable {
         this.comentario = comentario;
         this.usuario = usuario;
     }
-    public Avaliacao(AvaliacaoDTO obj){
-        this.filme = obj.filme();
-        this.nota = obj.nota();
-        this.comentario = obj.comentario();
-        this.usuario = obj.usuario();
-    }
 }

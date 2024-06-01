@@ -3,11 +3,18 @@ package com.api.movieratingsystem.services;
 import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.models.Usuario;
+import com.api.movieratingsystem.models.dto.AtualizarAvaliacao;
+import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
+import com.api.movieratingsystem.models.dto.RegistrerAvaliacaoDTO;
 import com.api.movieratingsystem.repositories.AvaliacaoRepository;
+import com.api.movieratingsystem.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +24,7 @@ import java.util.List;
 public class AvaliacaoService {
 
     private AvaliacaoRepository avaliacaoRepository;
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
     private FilmeService filmeService;
 
     public Page<Avaliacao> buscarTodos(Pageable pageable){
@@ -33,28 +40,40 @@ public class AvaliacaoService {
         return avaliacaoRepository.findByFilme(filme);
     }
     public List<Avaliacao> buscarPorUsuario(Long id){
-        Usuario usuario = usuarioService.buscarPorId(id);
+        Usuario usuario = usuarioRepository.findById(id).get();
         return avaliacaoRepository.findByUsuario(usuario);
     }
 
     @Transactional
-    public Avaliacao salvar(Avaliacao avaliacao){
-        Filme filme = filmeService.buscarPorId(avaliacao.getFilme().getId());
-        Usuario usuario = usuarioService.buscarPorId(avaliacao.getUsuario().getId());
-        avaliacao.setUsuario(usuario);
-        avaliacao.setFilme(filme);
+    public Avaliacao salvar(RegistrerAvaliacaoDTO avaliacaoDTO){
+        Usuario usuario = recuperarUsuario();
+        var filme = filmeService.buscarPorId(avaliacaoDTO.filme());
+
+        var avaliacao = new Avaliacao(filme, avaliacaoDTO.nota(), avaliacaoDTO.comentario(), usuario);
+
         avaliacaoRepository.save(avaliacao);
         filmeService.atualizarNotaMedia(filme.getId());
+
         return avaliacao;
     }
 
     @Transactional
-    public Avaliacao atualizar(Long id, Avaliacao obj){
+    public Avaliacao atualizar(Long id, AtualizarAvaliacao obj) throws Exception {
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
-        avaliacao.setNota(obj.getNota());
-        avaliacao.setComentario(obj.getComentario());
+        var usuario = recuperarUsuario();
+
+        if(!avaliacao.getUsuario().getId().equals(usuario.getId())){
+            throw new Exception("Essa avaliação nao pertence a esse usuario");
+        }
+        Integer nota = avaliacao.getNota();
+
+        avaliacao.setNota(obj.nota());
+        avaliacao.setComentario(obj.comentario());
         avaliacaoRepository.save(avaliacao);
-        filmeService.atualizarNotaMedia(avaliacao.getFilme().getId());
+
+        if (!nota.equals(obj.nota())) {
+            filmeService.atualizarNotaMedia(avaliacao.getFilme().getId());
+        }
         return avaliacao;
     }
 
@@ -65,5 +84,14 @@ public class AvaliacaoService {
         filme.getAvaliacoes().remove(avaliacao);
         filmeService.salvar(filme);
         filmeService.atualizarNotaMedia(filme.getId());
+    }
+
+    public Usuario recuperarUsuario(){
+        // Obter o usuário autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((Usuario) authentication.getPrincipal()).getUsername();
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        return usuario;
     }
 }

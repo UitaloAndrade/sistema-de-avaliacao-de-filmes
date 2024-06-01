@@ -3,7 +3,6 @@ package com.api.movieratingsystem.repositories;
 import com.api.movieratingsystem.models.Avaliacao;
 import com.api.movieratingsystem.models.Filme;
 import com.api.movieratingsystem.models.Usuario;
-import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

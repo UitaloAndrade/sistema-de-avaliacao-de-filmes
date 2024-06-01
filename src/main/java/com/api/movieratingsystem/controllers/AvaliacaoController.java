@@ -1,8 +1,10 @@
 package com.api.movieratingsystem.controllers;
 
 import com.api.movieratingsystem.models.Avaliacao;
+import com.api.movieratingsystem.models.dto.AtualizarAvaliacao;
 import com.api.movieratingsystem.models.dto.AvaliacaoDTO;
 import com.api.movieratingsystem.models.dto.AvaliacaoRespostaDTO;
+import com.api.movieratingsystem.models.dto.RegistrerAvaliacaoDTO;
 import com.api.movieratingsystem.services.AvaliacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,18 +58,22 @@ public class AvaliacaoController {
         return ResponseEntity.ok().body(avaliacaoRespostaDTO);
     }
 
-    @Operation(summary = "Salva uma avaliação")
+    @Operation(summary = "Cria uma avaliação")
     @PostMapping
-    public ResponseEntity<AvaliacaoRespostaDTO> salvar(@RequestBody AvaliacaoDTO avaliacaoDTO) {
-        Avaliacao avaliacao = avaliacaoService.salvar(new Avaliacao(avaliacaoDTO));
+    public ResponseEntity<AvaliacaoRespostaDTO> salvar(@RequestBody RegistrerAvaliacaoDTO registrerAvaliacaoDTO) {
+        Avaliacao avaliacao = avaliacaoService.salvar(registrerAvaliacaoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new AvaliacaoRespostaDTO(avaliacao));
     }
 
     @Operation(summary = "Atualiza a avaliação")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AvaliacaoRespostaDTO> atualizar(@PathVariable Long id, @RequestBody AvaliacaoDTO avaliacaoDTO) {
-        Avaliacao avaliacao = avaliacaoService.atualizar(id, new Avaliacao(avaliacaoDTO));
-        return ResponseEntity.ok().body(new AvaliacaoRespostaDTO(avaliacao));
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody AtualizarAvaliacao avaliacaoDTO) {
+        try {
+            var avaliacao = avaliacaoService.atualizar(id, avaliacaoDTO);
+            return ResponseEntity.ok().body(new AvaliacaoRespostaDTO(avaliacao));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Deleta a avaliação")
