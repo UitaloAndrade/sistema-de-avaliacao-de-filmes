@@ -77,8 +77,12 @@ public class AvaliacaoController {
 
     @Operation(summary = "Deleta a avaliação")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        avaliacaoService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity deletar(@PathVariable Long id) {
+        try {
+            avaliacaoService.deletar(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

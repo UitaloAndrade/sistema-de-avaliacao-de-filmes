@@ -76,8 +76,14 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public void deletar(Long id){
+    public void deletar(Long id) throws Exception {
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
+        var usuario = recuperarUsuario();
+
+        if(!avaliacao.getUsuario().getId().equals(usuario.getId())){
+            throw new Exception("Essa avaliação nao pertence a esse usuario");
+        }
+
         Filme filme = avaliacao.getFilme();
         filme.getAvaliacoes().remove(avaliacao);
         filmeService.salvar(filme);
